@@ -98,6 +98,13 @@ void init(TTree* clas12, bool is_mc, bool cov, bool traj, bool small) {
   clas12->Branch("dc_r3_x", &dc_r3_x);
   clas12->Branch("dc_r3_y", &dc_r3_y);
   clas12->Branch("dc_r3_z", &dc_r3_z);
+  clas12->Branch("dc_r1_path", &dc_r1_path);
+  clas12->Branch("dc_r2_path", &dc_r2_path);
+  clas12->Branch("dc_r3_path", &dc_r3_path);
+  clas12->Branch("dc_r1_edge", &dc_r1_edge);
+  clas12->Branch("dc_r2_edge", &dc_r2_edge);
+  clas12->Branch("dc_r3_edge", &dc_r3_edge);
+
   clas12->Branch("cvt_x", &cvt_x);
   clas12->Branch("cvt_y", &cvt_y);
   clas12->Branch("cvt_z", &cvt_z);
@@ -316,17 +323,18 @@ void init(TTree* clas12, bool is_mc, bool cov, bool traj, bool small) {
     clas12->Branch("CovMat_55", &CovMat_55);
   }
   if (traj) {
-    clas12->Branch("traj_pindex", &traj_pindex_vec);
-    clas12->Branch("traj_index", &traj_index_vec);
-    clas12->Branch("traj_detId", &traj_detId_vec);
-    clas12->Branch("traj_q", &traj_q_vec);
-    clas12->Branch("traj_x", &traj_x_vec);
-    clas12->Branch("traj_y", &traj_y_vec);
-    clas12->Branch("traj_z", &traj_z_vec);
-    clas12->Branch("traj_cx", &traj_cx_vec);
-    clas12->Branch("traj_cy", &traj_cy_vec);
-    clas12->Branch("traj_cz", &traj_cz_vec);
-    clas12->Branch("traj_pathlength", &traj_pathlength_vec);
+    clas12->Branch("traj_pindex", &traj_pindex);
+    clas12->Branch("traj_index", &traj_index);
+    clas12->Branch("traj_detId", &traj_detId);
+    clas12->Branch("traj_layer", &traj_layer);
+    clas12->Branch("traj_x", &traj_x);
+    clas12->Branch("traj_y", &traj_y);
+    clas12->Branch("traj_z", &traj_z);
+    clas12->Branch("traj_cx", &traj_cx);
+    clas12->Branch("traj_cy", &traj_cy);
+    clas12->Branch("traj_cz", &traj_cz);
+    clas12->Branch("traj_path", &traj_path);
+    clas12->Branch("traj_edge", &traj_edge);
   }
 }
 
@@ -1202,6 +1210,12 @@ int main(int argc, char** argv) {
     dc_r3_x.resize(len_pid);
     dc_r3_y.resize(len_pid);
     dc_r3_z.resize(len_pid);
+    dc_r1_path.resize(len_pid);
+    dc_r2_path.resize(len_pid);
+    dc_r3_path.resize(len_pid);
+    dc_r1_edge.resize(len_pid);
+    dc_r2_edge.resize(len_pid);
+    dc_r3_edge.resize(len_pid);
 
     cvt_x.resize(len_pid);
     cvt_y.resize(len_pid);
@@ -1212,15 +1226,21 @@ int main(int argc, char** argv) {
     fmt_z.resize(len_pid);
 
     for (int i = 0; i < len_pid; i++) {
-      dc_r1_x[i] = NAN;
-      dc_r1_y[i] = NAN;
-      dc_r1_z[i] = NAN;
-      dc_r2_x[i] = NAN;
-      dc_r2_y[i] = NAN;
-      dc_r2_z[i] = NAN;
-      dc_r3_x[i] = NAN;
-      dc_r3_y[i] = NAN;
-      dc_r3_z[i] = NAN;
+      dc_r1_x[i]    = NAN;
+      dc_r1_y[i]    = NAN;
+      dc_r1_z[i]    = NAN;
+      dc_r2_x[i]    = NAN;
+      dc_r2_y[i]    = NAN;
+      dc_r2_z[i]    = NAN;
+      dc_r3_x[i]    = NAN;
+      dc_r3_y[i]    = NAN;
+      dc_r3_z[i]    = NAN;
+      dc_r1_path[i] = NAN;
+      dc_r2_path[i] = NAN;
+      dc_r3_path[i] = NAN;
+      dc_r1_edge[i] = NAN;
+      dc_r2_edge[i] = NAN;
+      dc_r3_edge[i] = NAN;
 
       cvt_x[i] = NAN;
       cvt_y[i] = NAN;
@@ -1256,17 +1276,24 @@ int main(int argc, char** argv) {
             // Assuiming they are in r1,r2,r3
             // std::cout << layer << " " << rec_Traj->getFloat("x", k) << std::endl;
             if (layer == 6) {
-              dc_r1_x[i] = rec_Traj->getFloat("x", k);
-              dc_r1_y[i] = rec_Traj->getFloat("y", k);
-              dc_r1_z[i] = rec_Traj->getFloat("z", k);
+              dc_r1_x[i]    = rec_Traj->getFloat("x", k);
+              dc_r1_y[i]    = rec_Traj->getFloat("y", k);
+              dc_r1_z[i]    = rec_Traj->getFloat("z", k);
+              dc_r1_path[i] = rec_Traj->getFloat("path", k);
+              dc_r1_edge[i] = rec_Traj->getFloat("edge", k);
+
             } else if (layer == 18) {
-              dc_r2_x[i] = rec_Traj->getFloat("x", k);
-              dc_r2_y[i] = rec_Traj->getFloat("y", k);
-              dc_r2_z[i] = rec_Traj->getFloat("z", k);
+              dc_r2_x[i]    = rec_Traj->getFloat("x", k);
+              dc_r2_y[i]    = rec_Traj->getFloat("y", k);
+              dc_r2_z[i]    = rec_Traj->getFloat("z", k);
+              dc_r2_path[i] = rec_Traj->getFloat("path", k);
+              dc_r2_edge[i] = rec_Traj->getFloat("edge", k);
             } else if (layer == 30 || layer == 36) {
-              dc_r3_x[i] = rec_Traj->getFloat("x", k);
-              dc_r3_y[i] = rec_Traj->getFloat("y", k);
-              dc_r3_z[i] = rec_Traj->getFloat("z", k);
+              dc_r3_x[i]    = rec_Traj->getFloat("x", k);
+              dc_r3_y[i]    = rec_Traj->getFloat("y", k);
+              dc_r3_z[i]    = rec_Traj->getFloat("z", k);
+              dc_r3_path[i] = rec_Traj->getFloat("path", k);
+              dc_r3_edge[i] = rec_Traj->getFloat("edge", k);
             }
           }
         }
@@ -1408,31 +1435,47 @@ int main(int argc, char** argv) {
     }
 
     if (traj) {
-      l = rec_Traj->getRows();
-      traj_pindex_vec.resize(len_pid);
-      traj_index_vec.resize(len_pid);
+      len_pindex = rec_Traj->getRows();
+
       traj_detId_vec.resize(len_pid);
-      traj_q_vec.resize(len_pid);
+      traj_layer_vec.resize(len_pid);
       traj_x_vec.resize(len_pid);
       traj_y_vec.resize(len_pid);
       traj_z_vec.resize(len_pid);
       traj_cx_vec.resize(len_pid);
       traj_cy_vec.resize(len_pid);
       traj_cz_vec.resize(len_pid);
-      traj_pathlength_vec.resize(len_pid);
+      traj_path_vec.resize(len_pid);
+      traj_edge_vec.resize(len_pid);
+      for (int i = 0; i < len_pid; i++) {
+        traj_detId_vec[i] = -1;
+        traj_layer_vec[i] = -1;
+        traj_x_vec[i]     = NAN;
+        traj_y_vec[i]     = NAN;
+        traj_z_vec[i]     = NAN;
+        traj_cx_vec[i]    = NAN;
+        traj_cy_vec[i]    = NAN;
+        traj_cz_vec[i]    = NAN;
+        traj_path_vec[i]  = NAN;
+        traj_edge_vec[i]  = NAN;
+      }
 
-      for (int i = 0; i < l; i++) {
-        traj_pindex_vec[i]     = rec_Traj->getInt(1, i);
-        traj_index_vec[i]      = rec_Traj->getInt(2, i);
-        traj_detId_vec[i]      = rec_Traj->getInt(3, i);
-        traj_q_vec[i]          = rec_Traj->getFloat(4, i);
-        traj_x_vec[i]          = rec_Traj->getFloat(5, i);
-        traj_y_vec[i]          = rec_Traj->getFloat(6, i);
-        traj_z_vec[i]          = rec_Traj->getFloat(7, i);
-        traj_cx_vec[i]         = rec_Traj->getFloat(8, i);
-        traj_cy_vec[i]         = rec_Traj->getFloat(9, i);
-        traj_cz_vec[i]         = rec_Traj->getFloat(10, i);
-        traj_pathlength_vec[i] = rec_Traj->getFloat(11, i);
+      for (int i = 0; i < len_pid; i++) {
+        for (int k = 0; k < len_pindex; ++k) {
+          int pindex = rec_Traj->getInt(0, k);
+          if (pindex == i) {
+            traj_detId_vec[i] = rec_Traj->getInt(2, k);
+            traj_layer_vec[i] = rec_Traj->getFloat(3, k);
+            traj_x_vec[i]     = rec_Traj->getFloat(4, k);
+            traj_y_vec[i]     = rec_Traj->getFloat(5, k);
+            traj_z_vec[i]     = rec_Traj->getFloat(6, k);
+            traj_cx_vec[i]    = rec_Traj->getFloat(7, k);
+            traj_cy_vec[i]    = rec_Traj->getFloat(8, k);
+            traj_cz_vec[i]    = rec_Traj->getFloat(9, k);
+            traj_path_vec[i]  = rec_Traj->getFloat(10, k);
+            traj_edge_vec[i]  = rec_Traj->getFloat(11, k);
+          }
+        }
       }
     }
     clas12->Fill();
