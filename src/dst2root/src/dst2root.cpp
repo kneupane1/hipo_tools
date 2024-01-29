@@ -1437,27 +1437,27 @@ int main(int argc, char** argv) {
     if (traj) {
       len_pindex = rec_Traj->getRows();
 
-      traj_detId_vec.resize(len_pid);
-      traj_layer_vec.resize(len_pid);
-      traj_x_vec.resize(len_pid);
-      traj_y_vec.resize(len_pid);
-      traj_z_vec.resize(len_pid);
-      traj_cx_vec.resize(len_pid);
-      traj_cy_vec.resize(len_pid);
-      traj_cz_vec.resize(len_pid);
-      traj_path_vec.resize(len_pid);
-      traj_edge_vec.resize(len_pid);
+      traj_detId.resize(len_pid);
+      traj_layer.resize(len_pid);
+      traj_x.resize(len_pid);
+      traj_y.resize(len_pid);
+      traj_z.resize(len_pid);
+      traj_cx.resize(len_pid);
+      traj_cy.resize(len_pid);
+      traj_cz.resize(len_pid);
+      traj_path.resize(len_pid);
+      traj_edge.resize(len_pid);
       for (int i = 0; i < len_pid; i++) {
-        traj_detId_vec[i] = -1;
-        traj_layer_vec[i] = -1;
-        traj_x_vec[i]     = NAN;
-        traj_y_vec[i]     = NAN;
-        traj_z_vec[i]     = NAN;
-        traj_cx_vec[i]    = NAN;
-        traj_cy_vec[i]    = NAN;
-        traj_cz_vec[i]    = NAN;
-        traj_path_vec[i]  = NAN;
-        traj_edge_vec[i]  = NAN;
+        traj_detId[i] = -1;
+        traj_layer[i] = -1;
+        traj_x[i]     = NAN;
+        traj_y[i]     = NAN;
+        traj_z[i]     = NAN;
+        traj_cx[i]    = NAN;
+        traj_cy[i]    = NAN;
+        traj_cz[i]    = NAN;
+        traj_path[i]  = NAN;
+        traj_edge[i]  = NAN;
       }
 
       for (int i = 0; i < len_pid; i++) {
