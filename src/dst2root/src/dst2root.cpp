@@ -323,8 +323,6 @@ void init(TTree* clas12, bool is_mc, bool cov, bool traj, bool small) {
     clas12->Branch("CovMat_55", &CovMat_55);
   }
   if (traj) {
-    clas12->Branch("traj_pindex", &traj_pindex);
-    clas12->Branch("traj_index", &traj_index);
     clas12->Branch("traj_detId", &traj_detId);
     clas12->Branch("traj_layer", &traj_layer);
     clas12->Branch("traj_x", &traj_x);
@@ -1464,16 +1462,16 @@ int main(int argc, char** argv) {
         for (int k = 0; k < len_pindex; ++k) {
           int pindex = rec_Traj->getInt(0, k);
           if (pindex == i) {
-            traj_detId_vec[i] = rec_Traj->getInt(2, k);
-            traj_layer_vec[i] = rec_Traj->getFloat(3, k);
-            traj_x_vec[i]     = rec_Traj->getFloat(4, k);
-            traj_y_vec[i]     = rec_Traj->getFloat(5, k);
-            traj_z_vec[i]     = rec_Traj->getFloat(6, k);
-            traj_cx_vec[i]    = rec_Traj->getFloat(7, k);
-            traj_cy_vec[i]    = rec_Traj->getFloat(8, k);
-            traj_cz_vec[i]    = rec_Traj->getFloat(9, k);
-            traj_path_vec[i]  = rec_Traj->getFloat(10, k);
-            traj_edge_vec[i]  = rec_Traj->getFloat(11, k);
+            traj_detId[i] = rec_Traj->getInt(2, k);
+            traj_layer[i] = rec_Traj->getFloat(3, k);
+            traj_x[i]     = rec_Traj->getFloat(4, k);
+            traj_y[i]     = rec_Traj->getFloat(5, k);
+            traj_z[i]     = rec_Traj->getFloat(6, k);
+            traj_cx[i]    = rec_Traj->getFloat(7, k);
+            traj_cy[i]    = rec_Traj->getFloat(8, k);
+            traj_cz[i]    = rec_Traj->getFloat(9, k);
+            traj_path[i]  = rec_Traj->getFloat(10, k);
+            traj_edge[i]  = rec_Traj->getFloat(11, k);
           }
         }
       }
